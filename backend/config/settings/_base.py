@@ -31,9 +31,13 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     'drf_yasg',
-    # jwt allauth
+
+    # allauth (for jwt)
     "allauth",
     "allauth.account",
+    "allauth.socialaccount",
+
+    # dj-rest-jwt
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "rest_framework.authtoken",
