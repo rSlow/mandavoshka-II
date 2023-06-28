@@ -1,4 +1,4 @@
-from datetime import timedelta
+from config.settings import ENV
 
 SITE_ID = 1
 
@@ -17,10 +17,10 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = False
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": ENV.timedelta("ACCESS_TOKEN_LIFETIME"),
+    "REFRESH_TOKEN_LIFETIME": ENV.timedelta("REFRESH_TOKEN_LIFETIME"),
     "ROTATE_REFRESH_TOKENS": True,
-    "TOKEN_REFRESH_SERIALIZER": "dj_rest_auth.jwt_auth.CookieTokenRefreshSerializer"
+    "TOKEN_REFRESH_SERIALIZER": "dj_rest_auth.jwt_auth.CookieTokenRefreshSerializer",
 }
 
 REST_AUTH = {
@@ -28,6 +28,8 @@ REST_AUTH = {
     "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
     'SESSION_LOGIN': False,
     'USE_JWT': True,
+    'JWT_AUTH_SECURE': True,
     'JWT_AUTH_HTTPONLY': True,
+    "JWT_AUTH_SAMESITE": "None",
     "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer",
 }
