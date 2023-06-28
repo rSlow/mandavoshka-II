@@ -29,4 +29,5 @@ REST_AUTH = {
     'SESSION_LOGIN': False,
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': True,
+    "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer",
 }

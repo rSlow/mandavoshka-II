@@ -1,5 +1,5 @@
 from dj_rest_auth.jwt_auth import CookieTokenRefreshSerializer, set_jwt_access_cookie, set_jwt_refresh_cookie
-from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework import status
@@ -25,7 +25,3 @@ class RefreshViewWithCookieSupport(TokenRefreshView):
             set_jwt_refresh_cookie(response, response.data['refresh'])
             del response.data['refresh']
         return super().finalize_response(request, response, *args, **kwargs)
-
-
-class NoAPIView(GenericAPIView):
-    pass

@@ -1,9 +1,9 @@
 from django.urls import path, include
 
-from .views import UsersAPIView, RefreshViewWithCookieSupport, NoAPIView
+from .views import UsersAPIView, RefreshViewWithCookieSupport
 
 urlpatterns = [
-    # replacement for incorrect url
+    # replacement for incorrect refresh token view
     path('token/refresh/', RefreshViewWithCookieSupport.as_view(), name='token_refresh'),
 
     path('', include('dj_rest_auth.urls')),

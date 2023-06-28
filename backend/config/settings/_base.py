@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # rest
     "rest_framework",
     "corsheaders",
+    'drf_yasg',
     # jwt allauth
     "allauth",
     "allauth.account",
