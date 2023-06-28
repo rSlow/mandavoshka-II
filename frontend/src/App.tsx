@@ -3,6 +3,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from './index'
 import {observer} from "mobx-react-lite";
 import IsAuthApp from "./components/isAuthApp";
+import RegisterForm from "./components/RegisterForm";
 
 const App = () => {
     const userStore = useContext(Context).userStore
@@ -20,7 +21,11 @@ const App = () => {
                 ? <h2>Авторизация...</h2>
                 : userStore.isAuth
                     ? <IsAuthApp/>
-                    : <LoginForm/>
+                    : <div>
+                        <LoginForm/>
+                        <br/>
+                        <RegisterForm/>
+                    </div>
             }
         </div>
     );
