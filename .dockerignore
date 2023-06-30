@@ -272,5 +272,5 @@ dmypy.json
 cython_debug/
 
 #test-postgres-db
-/test-db/
+/test-dbs/
 /backend/staticfiles/

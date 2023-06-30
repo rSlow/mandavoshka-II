@@ -33,3 +33,5 @@ REST_AUTH = {
     "JWT_AUTH_SAMESITE": "None",
     "USER_DETAILS_SERIALIZER": "accounts.serializers.UserSerializer",
 }
+
+CSRF_TRUSTED_ORIGINS = ENV.list("CSRF_TRUSTED_ORIGINS")

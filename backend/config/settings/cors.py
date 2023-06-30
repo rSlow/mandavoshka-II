@@ -1,4 +1,4 @@
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+from ._base import ENV
+
+CORS_ALLOWED_ORIGINS = ENV.list("CORS_ALLOWED_ORIGINS", [])
 CORS_ALLOW_CREDENTIALS = True

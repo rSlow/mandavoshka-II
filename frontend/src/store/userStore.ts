@@ -36,6 +36,11 @@ export default class UserStore {
         this.isAuth = true
     }
 
+    deAuthenticate() {
+        this.delToken()
+        this.isAuth = false
+    }
+
     async _setAccessTokenFromPromise(promise: Promise<AxiosResponse<AccessTokenResponse>>) {
         this.setAuthLoading(true)
         try {
@@ -44,6 +49,7 @@ export default class UserStore {
             this.authenticate(accessToken)
         } catch (e: any) {
             console.log(e.response?.data)
+            this.deAuthenticate()
         } finally {
             this.setAuthLoading(false)
         }
@@ -62,16 +68,26 @@ export default class UserStore {
         await this._setAccessTokenFromPromise(AuthAPI.register(data))
     }
 
-    async refresh() {
+    async initAuth() {
         this.setAuthLoading(true)
+
+        const token = this.getToken()
         try {
-            const response = await AuthAPI.tokenRefresh()
-            this.authenticate(response.data.access)
-            return response
+            if (token) {
+                const response = await AuthAPI.tokenVerify(token)
+                if (Object.keys(response.data).length === 0) {
+                    this.authenticate(token)
+                }
+            }
         } catch (e: any) {
             console.log(e.response)
+            this.deAuthenticate()
         } finally {
             this.setAuthLoading(false)
         }
+    }
+
+    async refresh() {
+        await this._setAccessTokenFromPromise(AuthAPI.tokenRefresh())
     }
 }

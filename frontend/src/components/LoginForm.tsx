@@ -7,7 +7,7 @@ const LoginForm = () => {
     const userStore = useContext(Context).userStore
 
     return (
-        <div>
+        <div style={{marginBottom: 10}}>
             <input
                 type="text"
                 onChange={e => setEmail(e.target.value)}

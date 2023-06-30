@@ -8,10 +8,7 @@ import RegisterForm from "./components/RegisterForm";
 const App = () => {
     const userStore = useContext(Context).userStore
     useEffect(() => {
-        const token = userStore.getToken()
-        if (token) {
-            userStore.refresh()
-        }
+        userStore.initAuth()
     }, [userStore])
 
     return (
@@ -23,7 +20,6 @@ const App = () => {
                     ? <IsAuthApp/>
                     : <div>
                         <LoginForm/>
-                        <br/>
                         <RegisterForm/>
                     </div>
             }

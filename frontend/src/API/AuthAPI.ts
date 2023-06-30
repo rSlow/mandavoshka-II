@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios'
-import $axiosAPI from "../http";
-import {AccessTokenResponse} from "../schemas/responses/authResponses";
-import {LoginRequest, RegisterRequest, VerifyTokenRequest} from "../schemas/requests/authRequests";
+import $axiosAPI, {$axiosInterceptorLessAPI} from "../http";
+import {AccessTokenResponse, VerifyTokenResponse} from "../schemas/responses/authResponses";
+import {LoginRequest, RegisterRequest} from "../schemas/requests/authRequests";
 
 type AxiosAuthResponse = AxiosResponse<AccessTokenResponse>
 export default class AuthAPI {
@@ -17,7 +17,7 @@ export default class AuthAPI {
         return $axiosAPI.post<AccessTokenResponse>("/accounts/token/refresh/")
     }
 
-    static async tokenVerify(data: VerifyTokenRequest): Promise<AxiosResponse> {
+    static async tokenVerify(token: string): Promise<AxiosResponse<VerifyTokenResponse>> {
         return $axiosAPI.post<object>("/accounts/token/verify/")
     }
 }

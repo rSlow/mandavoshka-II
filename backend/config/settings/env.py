@@ -7,11 +7,13 @@ def get_env(env_dir: Path):
     env = Env()
     env_files = [
         "django.env",  # base
-        "pg.env",  # database
+        "postgres.env",  # database
         "smtp.env",  # email
         "jwt.env",  # jwt
     ]
-    for env_file in env_files:
-        env.read_env(str(env_dir / env_file))
+
+    if env_dir.exists():
+        for env_file in env_files:
+            env.read_env(str(env_dir / env_file))
 
     return env

@@ -1,15 +1,16 @@
 import sys
 from pathlib import Path
 
-from config.settings.env import get_env
+from environs import Env
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 APPS_DIR = BASE_DIR / "apps"
 sys.path.insert(0, str(APPS_DIR))
 
-ENV_DIR = BASE_DIR.parent / "env"
-ENV = get_env(env_dir=ENV_DIR)
+ENV_FILE = BASE_DIR.parent / "env.env"
+ENV = Env()
+ENV.read_env(ENV_FILE.as_posix())
 
 SECRET_KEY = ENV.str("SECRET_KEY")
 DEBUG = ENV.bool("DJANGO_DEBUG", default=False)
@@ -78,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
