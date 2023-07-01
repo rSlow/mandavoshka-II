@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserResponse {
     id: string,
     last_login: Date,
     username: string,

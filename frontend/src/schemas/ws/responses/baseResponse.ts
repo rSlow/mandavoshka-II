@@ -1,4 +1,4 @@
-export interface WebSocketBaseAnswer {
+export interface WebSocketBaseResponse {
     action: string,
     errors: string[],
     request_id: string,
@@ -6,6 +6,6 @@ export interface WebSocketBaseAnswer {
     data: [] | null
 }
 
-export interface WebSocketAnswerOK extends WebSocketBaseAnswer {
+export interface WebSocketAnswerOK extends WebSocketBaseResponse {
     data: []
 }

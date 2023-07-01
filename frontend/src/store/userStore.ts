@@ -1,8 +1,8 @@
 import {makeAutoObservable} from "mobx";
-import {LoginRequest, RegisterRequest} from "../schemas/requests/authRequests";
-import AuthAPI from "../API/AuthAPI";
+import {LoginRequest, RegisterRequest} from "../schemas/http/requests/authRequests";
+import AuthAPI from "../API/http/AuthAPI";
 import {AxiosResponse} from "axios";
-import {AccessTokenResponse} from "../schemas/responses/authResponses";
+import {AccessTokenResponse} from "../schemas/http/responses/authResponses";
 
 const tokenField: string = "token"
 export default class UserStore {
@@ -74,7 +74,7 @@ export default class UserStore {
         const token = this.getToken()
         try {
             if (token) {
-                const response = await AuthAPI.tokenVerify(token)
+                const response = await AuthAPI.tokenVerify()
                 if (Object.keys(response.data).length === 0) {
                     this.authenticate(token)
                 }

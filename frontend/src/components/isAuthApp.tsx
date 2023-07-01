@@ -1,16 +1,16 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Context} from "../index";
-import UsersAPI from "../API/UsersAPI";
-import {IUser} from "../schemas/AuthSchemas";
-import {WebSocketBaseAnswer} from "../schemas/ws";
+import UsersAPI from "../API/http/UsersAPI";
+import {IUserResponse} from "../schemas/http/responses/userResponses";
+import {WebSocketBaseResponse} from "../schemas/ws/responses/baseResponse";
 import classes from "./isAuthApp.module.scss";
 
 const IsAuthApp = () => {
     const userStore = useContext(Context).userStore
-    const [users, setUsers] = useState<IUser[]>([])
-    const wsBaseUrl: string = "ws://localhost:8003"
+    const [users, setUsers] = useState<IUserResponse[]>([])
+    const wsBaseUrl: string = "wss://83a4-79-105-6-128.ngrok-free.app"
 
-    const wsRef = useRef<WebSocket | null>()
+    const wsRef = useRef<WebSocket | null>(null)
 
     useEffect(() => {
         // wsRef.current = new WebSocket(`${wsBaseUrl}/ws/`)
@@ -20,9 +20,7 @@ const IsAuthApp = () => {
             console.log("ws opened")
         }
         wsRef.current.onmessage = (e: MessageEvent) => {
-            console.log(typeof e)
-            const message: WebSocketBaseAnswer = JSON.parse(e.data)
-            console.log(message)
+            const message: WebSocketBaseResponse = JSON.parse(e.data)
             console.log(message.response_status)
         }
         return () => {

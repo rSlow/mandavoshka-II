@@ -1,8 +1,8 @@
 import axios from 'axios'
 import {userStore} from '../index'
-import {AccessTokenResponse} from "../schemas/responses/authResponses";
+import {AccessTokenResponse} from "../schemas/http/responses/authResponses";
 
-const API_URL: string = process.env.REACT_APP_API_ADDRESS || ""
+const API_URL: string = "/api"
 
 const $axiosAPI = axios.create({
     withCredentials: true,
@@ -10,7 +10,6 @@ const $axiosAPI = axios.create({
 })
 
 $axiosAPI.interceptors.request.use(function (config) {
-    console.log(config)
     if (userStore.isAuth || config.url === "/accounts/token/verify/") {
         config.headers.Authorization = `Bearer ${userStore.getToken()}`
     }
@@ -25,7 +24,7 @@ $axiosAPI.interceptors.response.use((config) => {
         originalRequest._isRetry = true;
         try {
             const response = await $axiosInterceptorLessAPI.post<AccessTokenResponse>(
-                "accounts/token/refresh/"
+                "/accounts/token/refresh/"
             )
             userStore.authenticate(response.data.access);
             return $axiosAPI.request(originalRequest);
@@ -36,9 +35,9 @@ $axiosAPI.interceptors.response.use((config) => {
     throw error;
 })
 
-export const $axiosInterceptorLessAPI = axios.create({
+const $axiosInterceptorLessAPI = axios.create({
     withCredentials: true,
     baseURL: API_URL,
 })
 
-export default $axiosAPI
+export default $axiosAPI;
