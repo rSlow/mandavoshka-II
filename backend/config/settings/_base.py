@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     # rest
     "rest_framework",
     "corsheaders",
-    'drf_yasg',
+
+    # docs
+    "drf_yasg",
 
     # allauth (for jwt)
     "allauth",
@@ -42,6 +44,9 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "rest_framework.authtoken",
+
+    # channels
+    "channels",
 
     # --- local ---
     "apps.accounts.apps.AccountsConfig",

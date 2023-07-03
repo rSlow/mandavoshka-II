@@ -4,5 +4,6 @@ from .cors import *
 from .database import *
 from .media import *
 from .rest import *
+from .redis import *
 from .smtp import *
 from .static import *
