@@ -42,16 +42,12 @@ class UserConsumer(mixins.ListModelMixin,
 
     @consumer_action()
     async def list_staff(self, **_):
-        list_data = await self.get_list_staff()
-        serializer = self.serializer_class(
-            instance=list_data, many=True
-        )
-        return serializer.data, status.HTTP_200_OK
+        list_staff = await self.get_list_staff()
+        return list_staff, status.HTTP_200_OK
 
-    @force_database_sync_to_async
+    @database_sync_to_async
     def get_list_staff(self):
-        queryset = self.queryset.filter(is_staff=True)
-        return queryset
+        return [self.serializer_class(user).data for user in self.queryset.filter(is_staff=True)]
 
     async def notify_users(self):
         for group in self.groups:
@@ -84,12 +80,12 @@ class UserConsumer(mixins.ListModelMixin,
         В kwargs дополнительно приходит observer и имя группы
         """
         await self.reply(
-            action=message_type + f".{action}",
+            action=f"{message_type}.{action}",
             data=serialized_data
         )
 
     @user_change.groups_for_consumer
-    def user_change(self, user_id: int = None, **kwargs):
+    def user_change(self, user_id: int = None, **__):
         """
         Сюда можно передавать любые параметры в методе subscribe, для формирования групп отслеживания.
         Метод unsubscribe должен содержать те же параметры, для полной отписки от отслеживания (наверное)
