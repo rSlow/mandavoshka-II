@@ -8,20 +8,21 @@ import classes from "./isAuthApp.module.scss";
 const IsAuthApp = () => {
     const userStore = useContext(Context).userStore
     const [users, setUsers] = useState<IUserResponse[]>([])
-    const wsBaseUrl: string = "wss://83a4-79-105-6-128.ngrok-free.app"
 
     const wsRef = useRef<WebSocket | null>(null)
 
     useEffect(() => {
+        const API_WS_URL: string = process.env.REACT_APP_API_WS_ADDRESS || ""
+
         // wsRef.current = new WebSocket(`${wsBaseUrl}/ws/`)
-        wsRef.current = new WebSocket(`${wsBaseUrl}/ws/?token=${userStore.getToken()}`)
+        wsRef.current = new WebSocket(`${API_WS_URL}/ws/?token=${userStore.getToken()}`)
 
         wsRef.current.onopen = () => {
             console.log("ws opened")
         }
         wsRef.current.onmessage = (e: MessageEvent) => {
             const message: WebSocketBaseResponse = JSON.parse(e.data)
-            console.log(message.response_status)
+            console.log(message.data)
         }
         return () => {
             wsRef.current?.close()
@@ -37,6 +38,13 @@ const IsAuthApp = () => {
     function getUsersFromWebSocket() {
         wsRef.current?.send(JSON.stringify({
             action: "list",
+            request_id: new Date().getTime()
+        }))
+    }
+
+    function getActiveUsersFromWebSocket() {
+        wsRef.current?.send(JSON.stringify({
+            action: "list_staff",
             request_id: new Date().getTime()
         }))
     }
@@ -68,6 +76,12 @@ const IsAuthApp = () => {
                 getUsersFromWebSocket()
             }}>
                 Получить пользователей WS
+            </button>
+
+            <button onClick={() => {
+                getActiveUsersFromWebSocket()
+            }}>
+                Получить активных пользователей WS
             </button>
         </div>
     );

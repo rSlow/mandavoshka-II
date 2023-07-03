@@ -2,11 +2,12 @@ import axios from 'axios'
 import {userStore} from '../index'
 import {AccessTokenResponse} from "../schemas/http/responses/authResponses";
 
-const API_URL: string = "/api"
+// const API_HTTP_URL: string = "/api"
+const API_HTTP_URL: string = process.env.REACT_APP_API_HTTP_ADDRESS + "/api"
 
 const $axiosAPI = axios.create({
     withCredentials: true,
-    baseURL: API_URL,
+    baseURL: API_HTTP_URL,
 })
 
 $axiosAPI.interceptors.request.use(function (config) {
@@ -37,7 +38,7 @@ $axiosAPI.interceptors.response.use((config) => {
 
 const $axiosInterceptorLessAPI = axios.create({
     withCredentials: true,
-    baseURL: API_URL,
+    baseURL: API_HTTP_URL,
 })
 
 export default $axiosAPI;

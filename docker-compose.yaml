@@ -5,6 +5,8 @@ services:
     build: ./frontend
     ports:
       - '${REACT_PORT}:${REACT_PORT}'
+    env_file:
+      - ./env.env
     depends_on:
       - backend
 
