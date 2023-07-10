@@ -1,0 +1,101 @@
+@use '../../vars' as vars;
+
+@keyframes loader-spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+$anim-time: .5s;
+
+
+@mixin hover($color) {
+  &.hover,
+  &:hover {
+    background: $color;
+    color: white;
+  }
+}
+
+.button {
+  $common-button-color: black;
+
+  padding: 0.5em 1em;
+  font-size: 1.1em;
+  min-width: 100px;
+  background: transparent;
+  border: 3px $common-button-color solid;
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: border $anim-time, background-color $anim-time, color $anim-time, box-shadow .15s, transform .15s;
+
+  font-weight: 500;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include hover($common-button-color);
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 20px black;
+  }
+
+  &.is_loading {
+    color: transparent !important;
+    position: relative;
+
+    &::after {
+      animation: loader-spin 1s infinite linear;
+      transition: border-top-color $anim-time, border-right-color $anim-time;
+
+      border: 3px solid transparent;
+      border-right-color: $common-button-color;
+      border-top-color: $common-button-color;
+
+      border-radius: 9999px;
+      box-sizing: border-box;
+
+      content: "";
+
+      position: absolute;
+      height: 1em;
+      width: 1em;
+      left: calc(50% - (1em * .5));
+      top: calc(50% - (1em * .5));
+    }
+
+    &.is_loading:hover::after {
+      border-right-color: white;
+      border-top-color: white;
+    }
+  }
+
+  $colors: (
+          error:red,
+          success:green,
+          info:#407ef3,
+          warning:#e34e00,
+          main:vars.$main-color,
+  );
+
+  @each $colorClass, $color in $colors {
+    &.#{$colorClass} {
+      border-color: $color;
+      color: $color;
+
+      @include hover($color);
+
+      &.is_loading::after {
+        border-right-color: $color;
+        border-top-color: $color;
+      }
+    }
+  }
+}

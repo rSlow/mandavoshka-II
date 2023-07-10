@@ -1,21 +1,25 @@
-import React, {createContext} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import UserStore from "./store/userStore";
+import './reset.scss'
+import {StoreContext} from './store/StoreContext'
+import userStoreObject from "./store/userStore";
+import gamesListStoreObject from "./store/gamesListStore";
+import gameStoreObject from "./store/gameStore";
 
-interface StoreContext {
-    userStore: UserStore,
-}
-
-export const userStore = new UserStore()
-export const Context = createContext<StoreContext>({userStore})
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
 root.render(
-    <Context.Provider value={{userStore}}>
+    <StoreContext.Provider value={
+        {
+            userStore: userStoreObject,
+            gamesListStore: gamesListStoreObject,
+            gameStore: gameStoreObject
+        }
+    }>
         <App/>
-    </Context.Provider>
+    </StoreContext.Provider>
 );

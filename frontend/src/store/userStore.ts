@@ -5,7 +5,8 @@ import {AxiosResponse} from "axios";
 import {AccessTokenResponse} from "../schemas/http/responses/authResponses";
 
 const tokenField: string = "token"
-export default class UserStore {
+
+export class UserStore {
     isAuth = false
     isAuthLoading: boolean = !!this.getToken()
     // instant try to auth without loading components for isAuth = false state
@@ -59,11 +60,6 @@ export default class UserStore {
         await this._setAccessTokenFromPromise(AuthAPI.login(data))
     }
 
-    async logout() {
-        this.delToken()
-        this.isAuth = false
-    }
-
     async register(data: RegisterRequest) {
         await this._setAccessTokenFromPromise(AuthAPI.register(data))
     }
@@ -91,3 +87,7 @@ export default class UserStore {
         await this._setAccessTokenFromPromise(AuthAPI.tokenRefresh())
     }
 }
+
+const userStoreObject = new UserStore()
+
+export default userStoreObject

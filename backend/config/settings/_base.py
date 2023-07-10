@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     # --- local ---
     "apps.accounts.apps.AccountsConfig",
+    "apps.games.apps.GamesConfig",
 ]
 
 MIDDLEWARE = [

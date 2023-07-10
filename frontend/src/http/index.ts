@@ -1,8 +1,7 @@
 import axios from 'axios'
-import {userStore} from '../index'
 import {AccessTokenResponse} from "../schemas/http/responses/authResponses";
+import userStoreObject from "../store/userStore";
 
-// const API_HTTP_URL: string = "/api"
 const API_HTTP_URL: string = process.env.REACT_APP_API_HTTP_ADDRESS + "/api"
 
 const $axiosAPI = axios.create({
@@ -11,8 +10,8 @@ const $axiosAPI = axios.create({
 })
 
 $axiosAPI.interceptors.request.use(function (config) {
-    if (userStore.isAuth || config.url === "/accounts/token/verify/") {
-        config.headers.Authorization = `Bearer ${userStore.getToken()}`
+    if (userStoreObject.isAuth || config.url === "/accounts/token/verify/") {
+        config.headers.Authorization = `Bearer ${userStoreObject.getToken()}`
     }
     return config
 })
@@ -27,12 +26,13 @@ $axiosAPI.interceptors.response.use((config) => {
             const response = await $axiosInterceptorLessAPI.post<AccessTokenResponse>(
                 "/accounts/token/refresh/"
             )
-            userStore.authenticate(response.data.access);
+            userStoreObject.authenticate(response.data.access);
             return $axiosAPI.request(originalRequest);
         } catch (e: any) {
             console.log(e.response?.data)
         }
     }
+    console.log(error)
     throw error;
 })
 

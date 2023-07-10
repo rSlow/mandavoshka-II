@@ -1,0 +1,12 @@
+.navbar {
+  display: flex;
+  column-gap: 10px;
+  justify-content: flex-end;
+  border-bottom: 1px black dashed;
+  padding: 10px;
+
+  > * {
+    border: 1px black solid;
+    padding: 5px;
+  }
+}

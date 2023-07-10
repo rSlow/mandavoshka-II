@@ -1,5 +1,3 @@
-from functools import wraps
-
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from djangochannelsrestframework import mixins
@@ -14,30 +12,23 @@ from .serializers import UserSerializer
 User = get_user_model()
 
 
-def force_database_sync_to_async(func):
-    @wraps(func)
-    def inner(*args, **kwargs):
-        queryset = func(*args, **kwargs)
-        return list(queryset)
-
-    return database_sync_to_async(inner)
-
-
 class UserConsumer(mixins.ListModelMixin,
                    GenericAsyncAPIConsumer):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
-    groups = ['users']
+
+    COMMON_GROUP_NAME = 'users'
 
     async def connect(self):
         await super().connect()
-        await self.channel_layer.group_add("users", self.channel_name)
+        await self.channel_layer.group_add(self.COMMON_GROUP_NAME, self.channel_name)
         await self.user_change.subscribe(user_id=1)
+
 
     async def disconnect(self, code):
         await super().disconnect(code=code)
-        await self.channel_layer.group_discard("users", self.channel_name)
+        await self.channel_layer.group_discard(self.COMMON_GROUP_NAME, self.channel_name)
         await self.user_change.unsubscribe(user_id=1)
 
     @consumer_action()
@@ -50,14 +41,13 @@ class UserConsumer(mixins.ListModelMixin,
         return [self.serializer_class(user).data for user in self.queryset.filter(is_staff=True)]
 
     async def notify_users(self):
-        for group in self.groups:
-            await self.channel_layer.group_send(
-                group=group,
-                message={
-                    'type': 'update_users',
-                    'users': await self.get_all_users()
-                }
-            )
+        await self.channel_layer.group_send(
+            group=self.COMMON_GROUP_NAME,
+            message={
+                'type': 'update_users',
+                'users': await self.get_all_users()
+            }
+        )
 
     async def update_users(self, event: dict):
         await self.reply(
