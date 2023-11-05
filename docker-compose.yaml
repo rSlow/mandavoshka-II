@@ -6,7 +6,7 @@ services:
     ports:
       - '${REACT_PORT}:${REACT_PORT}'
     env_file:
-      - ./env.env
+      - .env
     depends_on:
       - backend
 
@@ -15,7 +15,7 @@ services:
     ports:
       - '${DJANGO_PORT}:${DJANGO_PORT}'
     env_file:
-      - ./env.env
+      - .env
     volumes:
       - django_static:${DJANGO_STATIC_FULL_PATH}
     depends_on:
@@ -30,7 +30,7 @@ services:
     volumes:
       - django_static:${DJANGO_STATIC_FULL_PATH}
     env_file:
-      - ./env.env
+      - .env
 
   postgres:
     image: postgres:15.3
@@ -39,7 +39,7 @@ services:
     volumes:
       - postgres_data:${PGDATA_PATH}
     env_file:
-      - ./env.env
+      - .env
     environment:
       PGDATA: ${PGDATA_PATH}
 

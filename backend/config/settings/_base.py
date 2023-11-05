@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 APPS_DIR = BASE_DIR / "apps"
 sys.path.insert(0, str(APPS_DIR))
 
-ENV_FILE = BASE_DIR.parent / "env.env"
+ENV_FILE = BASE_DIR.parent / ".env"
 ENV = Env()
 ENV.read_env(ENV_FILE.as_posix())
 
@@ -61,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # allauth middleware
+    'allauth.account.middleware.AccountMiddleware',
     # cors-headers
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',

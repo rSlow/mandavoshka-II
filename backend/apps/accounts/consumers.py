@@ -25,7 +25,6 @@ class UserConsumer(mixins.ListModelMixin,
         await self.channel_layer.group_add(self.COMMON_GROUP_NAME, self.channel_name)
         await self.user_change.subscribe(user_id=1)
 
-
     async def disconnect(self, code):
         await super().disconnect(code=code)
         await self.channel_layer.group_discard(self.COMMON_GROUP_NAME, self.channel_name)

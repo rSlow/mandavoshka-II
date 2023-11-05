@@ -1,12 +1,9 @@
 import os
-from pathlib import Path
 
 import django
 import uvicorn
 
-from config.settings import ENV
-
-BASE_DIR = Path(__file__).parent
+from config.settings import ENV, BASE_DIR
 
 if __name__ == "__main__":
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')

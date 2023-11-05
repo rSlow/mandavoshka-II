@@ -39,7 +39,7 @@ class Game(models.Model):
     @property
     def room_name(self):
         if self._room_name is None:
-            return f"Комната № {self.id}"
+            return f"Комната № {self.pk}"
         return self._room_name
 
     @room_name.setter
